@@ -34,7 +34,7 @@ jobs:
 
       - name: Run tests
         working-directory: src
-          run: python -m pytest -v
+        run: python -m pytest -v
 
 
 
