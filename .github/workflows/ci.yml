@@ -11,6 +11,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Installer requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
       - name: Créer fichier .env
         run: |
           echo "DB_HOST=mysql" >> .env
@@ -22,21 +32,9 @@ jobs:
           echo "REDIS_PORT=6379" >> .env
           echo "REDIS_DB=0" >> .env
 
-      - name: Build Docker images
-          run: docker compose build
-
-      - name: Start services
-        run: docker compose up -d
-
-      - name: Wait for services to be ready
-        run: |
-          echo "Waiting for services to start..."
-          sleep 10
-          # Optionnel : vérifier qu'un service spécifique est prêt
-          # docker compose exec -T store_manager python -c "import time; time.sleep(5)"
       - name: Run tests
         working-directory: src
-          run: docker compose exec -T store_manager python -m pytest
+          run: python -m pytest -v
 
 
 
