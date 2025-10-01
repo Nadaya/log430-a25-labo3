@@ -37,17 +37,16 @@ jobs:
         run: python -m pytest -v
 
 
+  deploy:
+    runs-on: self-hosted
+    needs: test   # Ne se lance que si les tests passent
+    steps:
+      - uses: actions/checkout@v4
 
-     # - name: Set up Python
-      #  uses: actions/setup-python@v4
-       # with:
-        #  python-version: '3.11'
-      #- name: Install dependencies
-       # run: |
-       #   python -m pip install --upgrade pip
-        #  pip install -r requirements.txt
+      - name: Déploiement local
+        run: |
+          cd $GITHUB_WORKSPACE
+          echo "Déploiement sur la VM en cours..."
 
-      #- name: Run tests
-       # working-directory: src
-       # run: |
-        #  python3 -m pytest
+          docker compose down || true
+          docker compose up -d --build
