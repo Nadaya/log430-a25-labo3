@@ -23,12 +23,12 @@ jobs:
 
       - name: Créer fichier .env
         run: |
-          echo "DB_HOST=mysql" >> .env
+          echo "DB_HOST=127.0.0.1" >> .env
           echo "DB_PORT=3306" >> .env
           echo "DB_NAME=labo03_db" >> .env
           echo "DB_USER=labo03" >> .env
           echo "DB_PASS=lab03" >> .env
-          echo "REDIS_HOST=redis" >> .env
+          echo "REDIS_HOST=127.0.0.1" >> .env
           echo "REDIS_PORT=6379" >> .env
           echo "REDIS_DB=0" >> .env
 
@@ -37,17 +37,16 @@ jobs:
         run: python -m pytest -v
 
 
+  deploy:
+    runs-on: self-hosted
+    needs: test   # Ne se lance que si les tests passent
+    steps:
+      - uses: actions/checkout@v4
 
-     # - name: Set up Python
-      #  uses: actions/setup-python@v4
-       # with:
-        #  python-version: '3.11'
-      #- name: Install dependencies
-       # run: |
-       #   python -m pip install --upgrade pip
-        #  pip install -r requirements.txt
+      - name: Déploiement local
+        run: |
+          cd $GITHUB_WORKSPACE
+          echo "Déploiement sur la VM en cours..."
 
-      #- name: Run tests
-       # working-directory: src
-       # run: |
-        #  python3 -m pytest
+          docker compose down || true
+          docker compose up -d --build
