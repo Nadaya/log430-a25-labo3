@@ -15,7 +15,9 @@ class Query(ObjectType):
         if product_data:
             return Product(
                 id=product_id,
-                name=f"Product {product_id}",
+                name=product_data.get('name', f"Product {id}"), # on met l'id au cas ou il n'y a pas de name
+                sku=product_data.get('sku',''),
+                price=float(product_data['price']),
                 quantity=int(product_data['quantity'])
             )
         return None

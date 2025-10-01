@@ -34,7 +34,7 @@ def get_stock_for_all_products():
     stock_data = []
     for row in results:
         stock_data.append({
-            'Article': row.product_id,
+            'Article': row.name,
             'Numéro SKU': row.sku,
             'Prix unitaire': float(row.price),
             'Unités en stock': int(row.quantity),
