@@ -30,7 +30,7 @@ def get_stock_for_all_products():
         Product.name,
         Product.sku, 
         Product.price
-    ).join(Product, Stock.product_id= Product.id).all()
+    ).join(Product, Stock.product_id== Product.id).all()
     stock_data = []
     for row in results:
         stock_data.append({
