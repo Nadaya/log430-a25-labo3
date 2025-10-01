@@ -10,18 +10,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Créer fichier .env
         run: |
-          echo "DB_HOST=db" >> .env
+          echo "DB_HOST=mysql" >> .env
           echo "DB_PORT=3306" >> .env
-          echo "DB_NAME=labo02_db" >> .env
-          echo "DB_USER=labo02" >> .env
-          echo "DB_PASS=lab02" >> .env
+          echo "DB_NAME=labo03_db" >> .env
+          echo "DB_USER=labo03" >> .env
+          echo "DB_PASS=lab03" >> .env
           echo "REDIS_HOST=redis" >> .env
           echo "REDIS_PORT=6379" >> .env
+          echo "REDIS_DB=0" >> .env
 
-     - name: Build Docker images
-        run: docker compose build
+      - name: Build Docker images
+          run: docker compose build
 
       - name: Start services
         run: docker compose up -d
@@ -34,7 +36,7 @@ jobs:
           # docker compose exec -T store_manager python -c "import time; time.sleep(5)"
       - name: Run tests
         working-directory: src
-        run: docker compose exec -T store_manager python -m pytest
+          run: docker compose exec -T store_manager python -m pytest
 
 
 
